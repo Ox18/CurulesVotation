@@ -11,6 +11,7 @@
   "author": "WILMER DELGADO (ALEX)",
   "license": "ISC",
   "dependencies": {
-    "scrape-it": "^5.3.2"
+    "scrape-it": "^5.3.2",
+    "uuid": "^8.3.2"
   }
 }

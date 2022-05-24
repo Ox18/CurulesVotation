@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require("uuid");
 const scrapeIt = require("scrape-it");
 const fs = require("fs");
 
@@ -27,15 +28,29 @@ async function scrapeItExample() {
 
 	const grupoParlamentarioUnicos = [...new Set(data.grupo_parlamentario)];
 
-	const newData = {
-		grupo_parlamentario: grupoParlamentarioUnicos,
-		congresistas: data.congresistas,
-	}
-	
-	await fs.writeFile("./src/congresistas.json", JSON.stringify(newData), (err) => {
-		if (err) throw err;
-		console.log("The file has been saved!");
+	const congresistasWithUUID = data.congresistas.map((congresistas) => {
+		return {
+			...congresistas,
+			id: uuidv4(),
+		};
 	});
+
+	await fs.writeFile(
+		"./src/congresistas.json",
+		JSON.stringify(congresistasWithUUID),
+		(err) => {
+			if (err) throw err;
+			console.log("The file has been saved!");
+		}
+	);
+	await fs.writeFile(
+		"./src/partidos.json",
+		JSON.stringify(grupoParlamentarioUnicos),
+		(err) => {
+			if (err) throw err;
+			console.log("The file has been saved!");
+		}
+	);
 }
 
 (async () => {
