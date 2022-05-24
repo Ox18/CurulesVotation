@@ -14,6 +14,8 @@ export default (app: Server): void => {
 	wss.on("connection", (ws) => {
 		ws.id = uuidv4();
 
+		storage.clients.add(ws);
+
 		const send = (data) => {
 			ws.send(JSON.stringify(data));
 		};

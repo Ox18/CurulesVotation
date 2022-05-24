@@ -34,4 +34,15 @@ export class OnlineStorage implements Storage<CongresistaModel> {
 	get(id: string): CongresistaModel {
 		return this.list.find((item) => item.id === id);
 	}
+
+	updateOnline(id: string): void {
+		const congresista = this.get(id);
+		congresista.online = true;
+		this.update(congresista);
+	}
+
+	update(item: CongresistaModel): void {
+		const index = this.list.findIndex((i) => i.id === item.id);
+		this.list[index] = item;
+	}
 }
