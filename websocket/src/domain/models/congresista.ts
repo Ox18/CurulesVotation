@@ -4,4 +4,5 @@ export type CongresistaModel = {
 	partido: string;
 	foto: string;
 	email: string;
+	online?: boolean;
 };
