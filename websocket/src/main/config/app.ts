@@ -6,5 +6,10 @@ export const setupApp = async (): Promise<Server> => {
 
 	const wss = new WebSocketServer({ server: app });
 
+	wss.on("connection", (ws) => {
+		// get id of connection
+		
+	});
+
 	return app;
 };
