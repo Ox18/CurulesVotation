@@ -1,7 +1,11 @@
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 
 import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "react-redux";
+import store from "./store";
+
+const App = React.lazy(() => import("./App"));
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
@@ -9,6 +13,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
 	<ChakraProvider>
-		<App />
+		<Suspense fallback={<div>Loading...</div>}>
+			<Provider store={store}>
+				<App />
+			</Provider>
+		</Suspense>
 	</ChakraProvider>
 );

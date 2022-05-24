@@ -1,4 +1,3 @@
-import data from "@/data/congresistas.json";
 import {
 	Modal,
 	ModalBody,
@@ -8,9 +7,13 @@ import {
 	Wrap,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { PersonSelect } from "./PersonSelect";
+import { CongresistaModel } from "../../../../websocket/src/domain/models/congresista";
 
 export const TablePersons = () => {
+	const congresistas = useSelector((state: any) => state.online.list);
+
 	const [open] = useState(true);
 
 	const sizes = ["full", "lg", "md", "sm", "xl"];
@@ -27,8 +30,8 @@ export const TablePersons = () => {
 				<ModalHeader textAlign="center">Selecciona un congresista</ModalHeader>
 				<ModalBody>
 					<Wrap>
-						{data.congresistas.map((congresista: any) => (
-							<PersonSelect key={congresista.nombre} {...congresista} />
+						{congresistas.map((congresista: CongresistaModel) => (
+							<PersonSelect key={congresista.id} {...congresista} />
 						))}
 					</Wrap>
 					<div
