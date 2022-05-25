@@ -24,4 +24,18 @@ export class ClientsStorage implements Storage<ClientModel> {
 	get(id: string): ClientModel {
 		return this.list.find((item) => item.id === id);
 	}
+	addCongresistaId(congresistaId: string, clientId: string): void {
+		const client = this.get(clientId);
+		client.congresistaId = congresistaId;
+	}
+	removeCongresistaId(clientId: string): void {
+		const client = this.get(clientId);
+		client.congresistaId = null;
+	}
+
+	sendMessageAll(message: any): void {
+		this.list.forEach((client) => {
+			client.send(JSON.stringify(message));
+		});
+	}
 }

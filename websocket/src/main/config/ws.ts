@@ -5,6 +5,7 @@ import { readdirSync } from "fs";
 import { join } from "path";
 
 import setupStorage, { Storage } from "./storage";
+import { ClientModel } from "@/domain/models";
 
 export default (app: Server): void => {
 	const storage = setupStorage();
@@ -13,6 +14,7 @@ export default (app: Server): void => {
 
 	wss.on("connection", (ws) => {
 		ws.id = uuidv4();
+		ws.congresistaId = null;
 
 		storage.clients.add(ws);
 
@@ -45,9 +47,7 @@ export default (app: Server): void => {
 
 export namespace WebSocket {
 	export type Response = {
-		ws: {
-			send: (message: string) => void;
-		};
+		ws: ClientModel;
 		data: any;
 		send: (msg: string, data?: any) => void;
 		storage: Storage.Response;

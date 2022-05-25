@@ -1,5 +1,6 @@
 {
     "exportall.config.folderListener": [
-        "/src/domain/models"
+        "/src/domain/models",
+        "/src/domain/usecases"
     ]
 }
