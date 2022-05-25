@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { setOnline } from "./store/slices/onlineSlice";
+import { setCongresistaId } from "./store/slices/my-congresista";
 
 import { ws, sendToWS } from "./ws";
 
@@ -14,6 +15,17 @@ function App() {
 		const [msg, data] = eJSON;
 		if (msg === "client-get-all-online") {
 			dispatch(setOnline(data));
+		}
+
+		switch (msg) {
+			case "client-get-my-congresista":
+				dispatch(setCongresistaId(data));
+				break;
+			case "update-my-congresista":
+				dispatch(setCongresistaId(data[0]));
+				break;
+			default:
+				break;
 		}
 	};
 

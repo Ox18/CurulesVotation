@@ -3,6 +3,7 @@ import React from "react";
 import { CongresistaModel } from "../../../../websocket/src/domain/models/congresista";
 
 import { sendToWS } from "@/ws";
+import { useSelector } from "react-redux";
 
 export const PersonSelect: React.FC<CongresistaModel> = ({
 	nombre,
@@ -11,6 +12,10 @@ export const PersonSelect: React.FC<CongresistaModel> = ({
 	online,
 	id,
 }) => {
+	const congresistaId = useSelector(
+		(state: any) => state.myCongresista.congresistaId
+	);
+
 	const onClick = () => {
 		sendToWS([
 			"select-online",
@@ -19,6 +24,8 @@ export const PersonSelect: React.FC<CongresistaModel> = ({
 			},
 		]);
 	};
+
+	const isSelected = congresistaId === id;
 
 	return (
 		<WrapItem>
@@ -30,6 +37,7 @@ export const PersonSelect: React.FC<CongresistaModel> = ({
 				cursor="pointer"
 				transition={["all", "0.3s", "ease-in-out"]}
 				filter={online ? "grayscale(100%)" : "grayscale(0%)"}
+				border={isSelected ? "2px solid #00bfff" : "2px solid #fff"}
 				_hover={
 					online
 						? {}

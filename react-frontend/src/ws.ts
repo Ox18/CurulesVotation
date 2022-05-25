@@ -3,6 +3,8 @@ export const sendToWS = (data: any) => {
 	if (ws.readyState === WebSocket.OPEN) {
 		ws.send(JSON.stringify(data));
 	} else {
-		console.log("Socket not connected");
+		ws.onopen = () => {
+			ws.send(JSON.stringify(data));
+		};
 	}
 };
