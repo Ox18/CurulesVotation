@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/app.js",
-    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:4005 --nolazy ./dist/app.js",
+    "start": "node dist/main/server.js",
+    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:8080 --nolazy ./dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "build:watch": "rimraf dist && tsc -p tsconfig-build.json -w"
   },
@@ -20,6 +20,7 @@
     "@": "dist"
   },
   "dependencies": {
+    "http": "^0.0.1-security",
     "module-alias": "^2.2.2",
     "nodemon": "^2.0.16",
     "rimraf": "^3.0.2",

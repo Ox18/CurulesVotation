@@ -16,6 +16,22 @@ export class UserListener implements EventListeners {
 		this.ws.send(JSON.stringify(["set-my-funcionario", { id }]));
 	}
 
+	alertSuccess(message: string) {
+		this.alert("success", message);
+	}
+
+	alertError(message: string) {
+		this.alert("error", message);
+	}
+
+	alertInfo(message: string) {
+		this.alert("info", message);
+	}
+
+	alert(type: string, message: string) {
+		this.ws.send(JSON.stringify(["alert", { type, message }]));
+	}
+
 	sendData(data: any) {
 		this.ws.send(JSON.stringify(data));
 	}

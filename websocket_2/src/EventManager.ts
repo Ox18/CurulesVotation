@@ -1,4 +1,4 @@
-import { EventListeners } from "./EventListeners";
+import { EventListeners } from "@/EventListeners";
 
 export class EventManager {
 	constructor(private listeners: EventManager.Listener[] = []) {}

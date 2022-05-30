@@ -19,18 +19,18 @@ export class EscenarioPersonajes {
 		}));
 	}
 
-	seleccionar(id: string, user_id: string){
-		const funcionario = this.funcionarios.find(item => item.id === id);
-		if(funcionario){
+	seleccionar(id: string, user_id: string) {
+		const funcionario = this.funcionarios.find((item) => item.id === id);
+		if (funcionario) {
 			funcionario.disponible = false;
 			funcionario.user_id = user_id;
 			this.actualizarListaDeFuncionarios();
 		}
 	}
 
-	deseleccionar(id: string){
-		const funcionario = this.funcionarios.find(item => item.id === id);
-		if(funcionario){
+	deseleccionar(id: string) {
+		const funcionario = this.funcionarios.find((item) => item.id === id);
+		if (funcionario) {
 			funcionario.disponible = true;
 			funcionario.user_id = "";
 			this.actualizarListaDeFuncionarios();
@@ -41,8 +41,7 @@ export class EscenarioPersonajes {
 		this.events.notify("actualizarListaDeFuncionarios", this.funcionarios);
 	}
 
-	isDisponible(id: string){
-		const funcionario = this.funcionarios.find(item => item.id === id);
-		return funcionario.disponible;
+	findById(id: string) {
+		return this.funcionarios.find((item) => item.id === id);
 	}
 }
