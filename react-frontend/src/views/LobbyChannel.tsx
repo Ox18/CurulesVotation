@@ -1,5 +1,5 @@
-import { TablePersons } from "@/components/common";
 import React from "react";
+import { TablePersons } from "@/components/common";
 
 export const LobbyChannel = (props: any) => {
 	return (
