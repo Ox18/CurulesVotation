@@ -4,12 +4,94 @@ import { useSelector } from "react-redux";
 import { FuncionarioModel } from "../../../../websocket_2/src/domain/model/funcionario";
 import { FuncionarioAvatar } from "@/components/common/FuncionarioAvatar";
 
-const guessRadiusByIndexAndLimitPerFile = (
-	index: number,
-	limitPerFile: number
-): number => {
-	const radius = index % limitPerFile;
-	return radius === 0 ? radius : radius + 1;
+const limits = [
+	{
+		limit: 7,
+		radius: 50,
+		space: 18.5,
+	},
+	{
+		limit: 20,
+		radius: 80,
+		space: 30,
+	},
+	{
+		limit: 37,
+		radius: 110,
+		space: 10,
+	},
+	{
+		limit: 54,
+		radius: 140,
+		space: 8.2,
+	},
+	{
+		limit: 79,
+		radius: 170,
+		space: 5.455,
+	},
+	{
+		limit: 100,
+		radius: 200,
+		space: 6.55,
+	},
+	{
+		limit: 120,
+		radius: 200,
+		space: 6.9,
+	},
+	{
+		limit: 200,
+		radius: 230,
+		space: 14.5,
+	},
+	{
+		limit: 300,
+		radius: 260,
+		space: 6,
+	},
+];
+
+const guessSpace = (index: number) => {
+	for (let i = 0; i < limits.length; i++) {
+		if (i === 0) {
+			if (index >= 0 && index <= limits[i].limit) {
+				return limits[i].space;
+			}
+		} else {
+			if (index >= limits[i - 1].limit + 1 && index <= limits[i].limit) {
+				return limits[i].space;
+			}
+		}
+	}
+	return 0;
+};
+
+const guessMyProp = (index: number, type: string = "") => {
+	for (let i = 0; i < limits.length; i++) {
+		if (i === 0) {
+			if (index >= 0 && index <= limits[i].limit) {
+				if (type === "space") {
+					return limits[i].space;
+				} else if (type === "index") {
+					return index;
+				} else if (type === "radius") {
+					return limits[i].radius;
+				}
+			}
+		} else {
+			if (index >= limits[i - 1].limit + 1 && index <= limits[i].limit) {
+				if (type === "space") {
+					return limits[i].space;
+				} else if (type === "index") {
+					return index - (limits[i - 1].limit + 1);
+				} else if (type === "radius") {
+					return limits[i].radius;
+				}
+			}
+		}
+	}
+	return 0;
 };
 
 export const GrupoGurules = () => {
@@ -35,52 +117,59 @@ export const GrupoGurules = () => {
 			let index: number = 0;
 			setAngles(
 				online.list.map((item: FuncionarioModel) => {
-					const my_radius =
-						index >= 0 && index <= 7
-							? 50
-							: index >= 8 && index <= 20
-							? 80
-							: index >= 21 && index <= 37
-							? 110
-							: index >= 37 && index <= 54
-							? 140 : 
-							index >= 55 && index <= 79
-							? 170 : 
-							index >= 80 && index <= 100
-							? 200 : 
-							index >= 101 && index <= 120
-							? 230 : 260;
+					// const my_radius =
+					// 	index >= 0 && index <= 7
+					// 		? 50
+					// 		: index >= 8 && index <= 20
+					// 		? 80
+					// 		: index >= 21 && index <= 37
+					// 		? 110
+					// 		: index >= 37 && index <= 54
+					// 		? 140
+					// 		: index >= 55 && index <= 79
+					// 		? 170
+					// 		: index >= 80 && index <= 100
+					// 		? 200
+					// 		: index >= 101 && index <= 120
+					// 		? 230
+					// 		: 260;
 
-					const my_index =
-						index >= 0 && index <= 7
-							? index
-							: index >= 8 && index <= 20
-							? index - 8
-							: index >= 21 && index <= 37
-							? index - 21
-							: index >= 37 && index <= 54
-							? index - 38 : 
-							index >= 55 && index <= 79
-							? index - 55 : 
-							index >= 80 && index <= 100
-							? index - 80 : 
-							index >= 101 && index <= 120
-							? index - 101 : index - 121
-					const space =
-						index >= 0 && index <= 7
-							? 18.5
-							: index >= 8 && index <= 20
-							? 13
-							: index >= 21 && index <= 37
-							? 10
-							: index >= 37 && index <= 54
-							? 8.2 : 
-							index >= 55 && index <= 79
-							? 5.455 : 
-							index >= 80 && index <= 100
-							? 6.55 : 
-							index >= 101 && index <= 120
-							? 6.9 : 14.5;
+					const my_radius = guessMyProp(index, "radius");
+
+					// const my_index =
+					// 	index >= 0 && index <= 7
+					// 		? index
+					// 		: index >= 8 && index <= 20
+					// 		? index - 8
+					// 		: index >= 21 && index <= 37
+					// 		? index - 21
+					// 		: index >= 37 && index <= 54
+					// 		? index - 38
+					// 		: index >= 55 && index <= 79
+					// 		? index - 55
+					// 		: index >= 80 && index <= 100
+					// 		? index - 80
+					// 		: index >= 101 && index <= 120
+					// 		? index - 101
+					// 		: index - 121;
+					const my_index = guessMyProp(index, "index");
+					// const space =
+					// 	index >= 0 && index <= 7
+					// 		? 18.5
+					// 		: index >= 8 && index <= 20
+					// 		? 13
+					// 		: index >= 21 && index <= 37
+					// 		? 10
+					// 		: index >= 37 && index <= 54
+					// 		? 8.2
+					// 		: index >= 55 && index <= 79
+					// 		? 5.455
+					// 		: index >= 80 && index <= 100
+					// 		? 6.55
+					// 		: index >= 101 && index <= 120
+					// 		? 6.9
+					// 		: 14.5;
+					const space = guessMyProp(index, "space");
 					const lastAngle = startAngle * my_index * space;
 					index++;
 					return {
