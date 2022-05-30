@@ -1,26 +1,34 @@
 import {
+	Button,
 	Modal,
 	ModalBody,
 	ModalContent,
+	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
 	Wrap,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FuncionarioOption } from "./FuncionarioOption";
 import { FuncionarioModel } from "@/../../websocket_2/src/domain/model/funcionario";
-
+import * as myAccountReducer from "@/store/slices/my-account";
 interface IProps {
 	sendToWS: (data: [string, any]) => void;
 }
 
 export const TablePersons: React.FC<IProps> = ({ sendToWS }) => {
-	const funcionarios = useSelector((state: any) => state.online.list);
+	const dispatch = useDispatch();
+
+	const { online, myAccount } = useSelector((state: any) => state);
 
 	const [open] = useState(true);
 
 	const sizes = ["full", "lg", "md", "sm", "xl"];
+
+	const onClickNextEscene = () => {
+		dispatch(myAccountReducer.setChannel(1));
+	};
 
 	return (
 		<Modal
@@ -33,8 +41,8 @@ export const TablePersons: React.FC<IProps> = ({ sendToWS }) => {
 			<ModalContent>
 				<ModalHeader textAlign="center">Selecciona un congresista</ModalHeader>
 				<ModalBody>
-					<Wrap>
-						{funcionarios.map((funcionario: FuncionarioModel) => (
+					<Wrap className="animate__animated animate__fadeIn">
+						{online.list.map((funcionario: FuncionarioModel) => (
 							<FuncionarioOption
 								key={funcionario.id}
 								{...funcionario}
@@ -59,6 +67,13 @@ export const TablePersons: React.FC<IProps> = ({ sendToWS }) => {
 						}}
 					/>
 				</ModalBody>
+				{myAccount.funcionarioId && (
+					<ModalFooter className="animate__animated animate__fadeIn">
+						<Button colorScheme="teal" size="md" onClick={onClickNextEscene}>
+							Continuar
+						</Button>
+					</ModalFooter>
+				)}
 			</ModalContent>
 		</Modal>
 	);

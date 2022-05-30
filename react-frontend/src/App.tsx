@@ -1,66 +1,52 @@
 import { TablePersons } from "@/components/common/TablePersons";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { setOnline } from "./store/slices/onlineSlice";
 import { setFuncionarioId } from "@/store/slices/my-account";
 import { useToast } from "@chakra-ui/react";
+import { useWebSocketHook } from "./hooks/useWebSocketHook";
 
 function App() {
 	const dispatch = useDispatch();
 	const toast = useToast();
 
-	const [ws] = useState(new WebSocket("ws://localhost:8080"));
-
-	const sendToWS = (data: [string, any]) => {
-		if (ws.readyState === WebSocket.OPEN) {
-			ws.send(JSON.stringify(data));
-		} else {
-			ws.onopen = () => {
-				ws.send(JSON.stringify(data));
-			};
-		}
-	};
-
-	ws.onmessage = function (event: any) {
-		const eJSON = JSON.parse(event.data);
-		const [msg, data] = eJSON;
-
-		switch (msg) {
-			case "actualizarListaDeFuncionarios":
-				dispatch(setOnline(data));
-				break;
-			case "set-my-funcionario":
-				dispatch(setFuncionarioId(data.id));
-				break;
-			case "alert":
-				const { type, message } = data;
-				toast({
-					title: message,
-					status: type,
-					duration: 9000,
-					isClosable: true,
-				});
-				break;
-		}
-	};
+	const { webSocket, sendDataToServer, connected } = useWebSocketHook();
 
 	useEffect(() => {
-		sendToWS([
-			"get-all-online",
-			{
-				dato: "dato",
-			},
-		]);
-		return () => {
-			console.log("unmount");
-		};
+		if (webSocket?.readyState === 1) {
+			sendDataToServer([
+				"get-all-online",
+				{
+					dato: "dato",
+				},
+			]);
+		}
+
+		if (webSocket) {
+			webSocket.onmessage = (event: any) => {
+				const [msg, data] = JSON.parse(event.data);
+
+				switch (msg) {
+					case "actualizarListaDeFuncionarios":
+						dispatch(setOnline(data));
+						break;
+					case "set-my-funcionario":
+						dispatch(setFuncionarioId(data.id));
+						break;
+					case "alert":
+						toast(data);
+						break;
+				}
+			};
+		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [connected]);
 
 	return (
 		<>
-			<TablePersons sendToWS={sendToWS} />
+			<TablePersons sendToWS={sendDataToServer} />
 		</>
 	);
 }

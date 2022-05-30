@@ -21,7 +21,7 @@ export const FuncionarioOption: React.FC<IProps> = ({
 		sendToWS([
 			"select-funcionario",
 			{
-				id: "asdfasd"
+				id,
 			},
 		]);
 	};
