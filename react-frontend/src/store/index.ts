@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import onlineReducer from "./slices/onlineSlice";
-import myCongresistaSlice from "./slices/my-congresista";
+import online from "./slices/onlineSlice";
+import myAccount from "./slices/my-account";
 
 export default configureStore({
 	reducer: {
-		online: onlineReducer,
-		myCongresista: myCongresistaSlice,
+		online,
+		myAccount,
 	},
 });

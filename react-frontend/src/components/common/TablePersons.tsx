@@ -8,11 +8,15 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { PersonSelect } from "./PersonSelect";
-import { CongresistaModel } from "../../../../websocket/src/domain/models/congresista";
+import { FuncionarioOption } from "./FuncionarioOption";
+import { FuncionarioModel } from "@/../../websocket_2/src/domain/model/funcionario";
 
-export const TablePersons = () => {
-	const congresistas = useSelector((state: any) => state.online.list);
+interface IProps {
+	sendToWS: (data: [string, any]) => void;
+}
+
+export const TablePersons: React.FC<IProps> = ({ sendToWS }) => {
+	const funcionarios = useSelector((state: any) => state.online.list);
 
 	const [open] = useState(true);
 
@@ -30,8 +34,12 @@ export const TablePersons = () => {
 				<ModalHeader textAlign="center">Selecciona un congresista</ModalHeader>
 				<ModalBody>
 					<Wrap>
-						{congresistas.map((congresista: CongresistaModel) => (
-							<PersonSelect key={congresista.id} {...congresista} />
+						{funcionarios.map((funcionario: FuncionarioModel) => (
+							<FuncionarioOption
+								key={funcionario.id}
+								{...funcionario}
+								sendToWS={sendToWS}
+							/>
 						))}
 					</Wrap>
 					<div

@@ -1,31 +1,32 @@
 import { Avatar, WrapItem } from "@chakra-ui/react";
 import React from "react";
-import { CongresistaModel } from "../../../../websocket/src/domain/models/congresista";
-
-import { sendToWS } from "@/ws";
+import { FuncionarioModel } from "@/../../websocket_2/src/domain/model/funcionario";
 import { useSelector } from "react-redux";
 
-export const PersonSelect: React.FC<CongresistaModel> = ({
+interface IProps extends FuncionarioModel {
+	sendToWS: (data: [string, any]) => void;
+}
+
+export const FuncionarioOption: React.FC<IProps> = ({
 	nombre,
 	foto,
 	partido,
-	online,
+	disponible,
 	id,
+	sendToWS,
 }) => {
-	const congresistaId = useSelector(
-		(state: any) => state.myCongresista.congresistaId
-	);
+	const { funcionarioId } = useSelector((state: any) => state.myAccount);
 
 	const onClick = () => {
 		sendToWS([
-			"select-online",
+			"select-funcionario",
 			{
-				id,
+				id: "asdfasd"
 			},
 		]);
 	};
 
-	const isSelected = congresistaId === id;
+	const isSelected = funcionarioId === id;
 
 	return (
 		<WrapItem>
@@ -36,10 +37,12 @@ export const PersonSelect: React.FC<CongresistaModel> = ({
 				src={foto}
 				cursor="pointer"
 				transition={["all", "0.3s", "ease-in-out"]}
-				filter={online ? "grayscale(100%)" : "grayscale(0%)"}
+				filter={
+					isSelected ? "" : !disponible ? "grayscale(100%)" : "grayscale(0%)"
+				}
 				border={isSelected ? "2px solid #00bfff" : "2px solid #fff"}
 				_hover={
-					online
+					!disponible
 						? {}
 						: {
 								boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
