@@ -20,19 +20,22 @@ export class EscenarioPersonajes {
 	}
 
 	seleccionar(id: string, user_id: string) {
-		const funcionario = this.funcionarios.find((item) => item.id === id);
-		if (funcionario) {
-			funcionario.disponible = false;
-			funcionario.user_id = user_id;
-			this.actualizarListaDeFuncionarios();
-		}
+		this.updateBasicDataOfFuncionario(id, false, user_id);
 	}
 
 	deseleccionar(id: string) {
-		const funcionario = this.funcionarios.find((item) => item.id === id);
+		this.updateBasicDataOfFuncionario(id, true);
+	}
+
+	private updateBasicDataOfFuncionario(
+		funcionario_id: string,
+		disponible: boolean,
+		user_id: string = ""
+	) {
+		const funcionario = this.findById(funcionario_id);
 		if (funcionario) {
-			funcionario.disponible = true;
-			funcionario.user_id = "";
+			funcionario.disponible = disponible;
+			funcionario.user_id = user_id;
 			this.actualizarListaDeFuncionarios();
 		}
 	}

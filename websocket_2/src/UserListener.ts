@@ -28,8 +28,13 @@ export class UserListener implements EventListeners {
 		this.alert("info", message);
 	}
 
-	alert(type: string, message: string) {
-		this.ws.send(JSON.stringify(["alert", { type, message }]));
+	alert(status: string, title: string) {
+		this.ws.send(
+			JSON.stringify([
+				"alert",
+				{ title, status, duration: 9000, isClosable: true },
+			])
+		);
 	}
 
 	sendData(data: any) {

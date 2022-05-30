@@ -34,6 +34,7 @@ export default (app: Server) => {
 
 					if (funcionario_id === user.funcionario_id) {
 						escenarioPersonajes.deseleccionar(funcionario_id);
+						user.setFuncionarioId();
 					} else if (
 						user.funcionario_id === "" &&
 						funcionario_data.disponible
