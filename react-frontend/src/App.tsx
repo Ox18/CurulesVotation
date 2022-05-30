@@ -1,15 +1,18 @@
-import { TablePersons } from "@/components/common/TablePersons";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { setOnline } from "./store/slices/onlineSlice";
 import { setFuncionarioId } from "@/store/slices/my-account";
 import { useToast } from "@chakra-ui/react";
 import { useWebSocketHook } from "./hooks/useWebSocketHook";
+import { LobbyChannel } from "./views/LobbyChannel";
+import { VotacionChannel } from "./views/VotacionChannel";
 
 function App() {
 	const dispatch = useDispatch();
 	const toast = useToast();
+
+	const { myAccount } = useSelector((state: any) => state);
 
 	const { webSocket, sendDataToServer, connected } = useWebSocketHook();
 
@@ -46,7 +49,14 @@ function App() {
 
 	return (
 		<>
-			<TablePersons sendToWS={sendDataToServer} />
+			{myAccount.channel === 0 && (
+				<LobbyChannel
+					{...{
+						sendDataToServer,
+					}}
+				/>
+			)}
+			{myAccount.channel === 1 && <VotacionChannel />}
 		</>
 	);
 }

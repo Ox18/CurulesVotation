@@ -13,11 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { FuncionarioOption } from "./FuncionarioOption";
 import { FuncionarioModel } from "@/../../websocket_2/src/domain/model/funcionario";
 import * as myAccountReducer from "@/store/slices/my-account";
+
 interface IProps {
-	sendToWS: (data: [string, any]) => void;
+	sendDataToServer: (data: [string, any]) => void;
 }
 
-export const TablePersons: React.FC<IProps> = ({ sendToWS }) => {
+export const TablePersons: React.FC<IProps> = ({ sendDataToServer }) => {
 	const dispatch = useDispatch();
 
 	const { online, myAccount } = useSelector((state: any) => state);
@@ -46,7 +47,7 @@ export const TablePersons: React.FC<IProps> = ({ sendToWS }) => {
 							<FuncionarioOption
 								key={funcionario.id}
 								{...funcionario}
-								sendToWS={sendToWS}
+								sendToWS={sendDataToServer}
 							/>
 						))}
 					</Wrap>
