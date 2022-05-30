@@ -15,6 +15,10 @@ export const useWebSocketHook = () => {
 
 		webSocket.onclose = () => {
 			setDisconnected(true);
+			setTimeout(() => {
+				setConnected(false);
+				setDisconnected(false);
+			}, 3000);
 		};
 
 		return () => {
